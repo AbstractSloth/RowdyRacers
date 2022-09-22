@@ -5,10 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -28,6 +25,8 @@ public class Controller extends ApplicationAdapter {
 
 	private Table buttons;
 
+	private Table endView;
+
 
 	private Game game;
 
@@ -36,10 +35,8 @@ public class Controller extends ApplicationAdapter {
 		stage = new Stage(new FitViewport(640, 480));
 		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 		textures = new TextureHandler();
-		game = new Game(this);
 
-		buttons = ButtonAdder.addButtons(stage,game,textures);
-
+		startGame();
 
 
 
@@ -84,12 +81,30 @@ public class Controller extends ApplicationAdapter {
 		Table table = new Table();
 		table.setFillParent(true);
 		stage.addActor(table);
-
+		endView = table;
 
 		Label messageLabel = new Label( message, skin );
 
+		final TextButton resetButton = new TextButton("restart", skin);
+		resetButton.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				startGame();
+			}
+		});
+
 		table.add(messageLabel);
+		table.row();
+		table.add(resetButton);
 
 
+	}
+
+
+	private void startGame(){
+
+		game = new Game(this);
+		stage.getActors().removeValue(endView,true);
+		buttons = ButtonAdder.addButtons(stage,game,textures);
 	}
 }
