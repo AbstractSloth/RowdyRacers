@@ -29,11 +29,4 @@ public class ButtonListener extends ChangeListener {
     }
 
 
-    public int getVertical() {
-        return buttonPosVertical;
-    }
-
-    public int getHorizontal() {
-        return buttonPosHorizontal;
-    }
 }
